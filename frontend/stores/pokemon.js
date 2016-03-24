@@ -14,11 +14,21 @@ var resetPokemons = function(pokemons) {
   });
 };
 
+var addPokemon = function(pokemon) {
+  _pokemons[pokemon.id] = pokemon;
+};
+
 PokemonStore.__onDispatch = function(payload) {
   switch(payload.actionType) {
     case POKEMONCONSTANTS.POKEMONS_RECEIVED:
       resetPokemons(payload.pokemons);
       this.__emitChange();
+      break;
+
+    case POKEMONCONSTANTS.POKEMON_RECEIVED:
+      addPokemon(payload.pokemon);
+      this.__emitChange();
+      break;
   }
 };
 
@@ -29,6 +39,12 @@ PokemonStore.all = function() {
     pokemons.push(_pokemons[pokeKey]);
   });
   return pokemons;
+};
+
+PokemonStore.find = function(pokeId) {
+  var id = parseInt(pokeId);
+  return _pokemons[id];
+
 };
 
 module.exports = PokemonStore;
